@@ -37,6 +37,9 @@ func ShellExecute(program, arguments, directory string, show int32) (err error) 
 	if len(arguments) > 0 {
 		arguments16, _ = windows.UTF16PtrFromString(arguments)
 	}
+	if len(directory) == 0 && len(program) > 0 {
+		directory = filepath.Dir(program)
+	}
 	if len(directory) > 0 {
 		directory16, _ = windows.UTF16PtrFromString(directory)
 	}
