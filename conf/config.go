@@ -242,6 +242,10 @@ func (conf *Config) DeduplicateNetworkEntries() {
 
 func (conf *Config) Redact() {
 	conf.Interface.PrivateKey = Key{}
+	conf.Interface.PreUp = ""
+	conf.Interface.PostUp = ""
+	conf.Interface.PreDown = ""
+	conf.Interface.PostDown = ""
 	for i := range conf.Peers {
 		conf.Peers[i].PublicKey = Key{}
 		binary.LittleEndian.PutUint64(conf.Peers[i].PublicKey[:8], uint64(i))
