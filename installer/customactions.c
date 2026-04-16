@@ -486,7 +486,13 @@ static bool remove_directory_recursive(MSIHANDLE installer, TCHAR path[MAX_PATH]
 		}
 
 		if (find_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-			remove_directory_recursive(installer, path, max_depth - 1);
+			if (find_data.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) {
+				if (RemoveDirectory(path))
+					log_messagef(installer, LOG_LEVEL_INFO, TEXT("Deleted reparse point \"%1\""), path);
+				else
+					log_errorf(installer, LOG_LEVEL_WARN, GetLastError(), TEXT("RemoveDirectory(\"%1\") reparse point failed"), path);
+			} else
+				remove_directory_recursive(installer, path, max_depth - 1);
 			continue;
 		}
 
