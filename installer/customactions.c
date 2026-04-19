@@ -374,7 +374,7 @@ static bool calculate_file_id(const TCHAR *path, struct file_id *id)
 	HANDLE file;
 	bool ret;
 
-	file = CreateFile(path, 0, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	file = CreateFile(path, 0, 0, NULL, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT, NULL);
 	if (file == INVALID_HANDLE_VALUE)
 		return false;
 	ret = GetFileInformationByHandle(file, &file_info);
